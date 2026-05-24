@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/quinn/coding/C++/OPENGLexperiment/build",
+  "command": "/usr/bin/g++ -I/home/quinn/coding/C++/OPENGLexperiment/dependencies -g -o CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o -c /home/quinn/coding/C++/OPENGLexperiment/src/main.cpp",
+  "file": "/home/quinn/coding/C++/OPENGLexperiment/src/main.cpp",
+  "output": "/home/quinn/coding/C++/OPENGLexperiment/build/CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/quinn/coding/C++/OPENGLexperiment/build",
+  "command": "/usr/bin/gcc -I/home/quinn/coding/C++/OPENGLexperiment/dependencies -g -o CMakeFiles/OPENGLexperiment.dir/src/glad.c.o -c /home/quinn/coding/C++/OPENGLexperiment/src/glad.c",
+  "file": "/home/quinn/coding/C++/OPENGLexperiment/src/glad.c",
+  "output": "/home/quinn/coding/C++/OPENGLexperiment/build/CMakeFiles/OPENGLexperiment.dir/src/glad.c.o"
+}
+]

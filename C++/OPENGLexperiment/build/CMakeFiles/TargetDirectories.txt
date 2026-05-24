@@ -1,0 +1,3 @@
+/home/quinn/coding/C++/OPENGLexperiment/build/CMakeFiles/OPENGLexperiment.dir
+/home/quinn/coding/C++/OPENGLexperiment/build/CMakeFiles/edit_cache.dir
+/home/quinn/coding/C++/OPENGLexperiment/build/CMakeFiles/rebuild_cache.dir
