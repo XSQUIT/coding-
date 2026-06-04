@@ -1,5 +1,56 @@
 #include "config.h"
 
+unsigned int make_module(const std::string& filepath, unsigned int module_type);
+
+unsigned int make_shader(const std::string& vertex_filepath, const std::string fragment_filepath);
+
+int main() 
+{
+    GLFWwindow* window; 
+
+    if (!glfwInit())
+    {
+        std::cout << "GLFW not Initialized" << std::endl;
+        return -1;
+    }
+    window = glfwCreateWindow(800, 450, "OpenGL experiment", NULL, NULL);
+
+    if (!window) 
+    {
+        std::cout<<"Window not created"<<std::endl;
+        return -1;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        glfwTerminate();
+        return -1;
+    }
+    
+    glClearColor(0.25f, 0.5f, 0.75f, 1.0f);
+
+    unsigned int shader = make_shader(
+        "../src/shaders/vertex.vert",
+        "../src/shaders/fragment.frag"
+
+    );
+
+    while (!glfwWindowShouldClose(window)) 
+    {
+        glfwPollEvents();
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        glUseProgram(shader);
+        glfwSwapBuffers(window);
+    }
+
+    glDeleteProgram(shader);
+    glfwTerminate();
+
+    return 0;
+}    
+
 unsigned int make_module(const std::string& filepath, unsigned int module_type) {
     std::ifstream file;
     std::stringstream bufferedLines;
@@ -54,52 +105,3 @@ unsigned int make_shader(const std::string& vertex_filepath, const std::string f
 
     return shader;
 }
-
-int main() 
-{
-    GLFWwindow* window; 
-
-    if (!glfwInit())
-    {
-        std::cout << "GLFW not Initialized" << std::endl;
-        return -1;
-    }
-    window = glfwCreateWindow(800, 450, "OpenGL experiment", NULL, NULL);
-
-    if (!window) 
-    {
-        std::cout<<"Window not created"<<std::endl;
-        return -1;
-    }
-
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        glfwTerminate();
-        return -1;
-    }
-    
-    glClearColor(0.25f, 0.5f, 0.75f, 1.0f);
-
-    unsigned int shader = make_shader(
-        "../src/shaders/vertex.vert",
-        "../src/shaders/fragment.frag"
-
-    );
-
-    while (!glfwWindowShouldClose(window)) 
-    {
-        glfwPollEvents();
-
-        glClear(GL_COLOR_BUFFER_BIT);
-        glUseProgram(shader);
-        glfwSwapBuffers(window);
-    }
-
-    glDeleteProgram(shader);
-    glfwTerminate();
-
-    return 0;
-}    
-
-
