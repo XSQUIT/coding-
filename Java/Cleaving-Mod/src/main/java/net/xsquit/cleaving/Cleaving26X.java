@@ -2,6 +2,8 @@ package net.xsquit.cleaving;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.xsquit.cleaving.block.ModBlocks;
+import net.xsquit.cleaving.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,5 +13,7 @@ public class Cleaving26X implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModItems.registerModItems();
+		ModBlocks.registerModBlocks();
 	}
 }
