@@ -18,6 +18,8 @@ import java.util.function.Function;
 public class ModBlocks {
 
     public static final Block SILERUM_ORE = registerBlock("silerum_ore", Block::new);
+    public static final Block STILL = registerBlock("still_block", Block::new);
+
 
     private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> function) {
         Block toRegister = function.apply(BlockBehaviour.Properties.of()
@@ -37,5 +39,7 @@ public class ModBlocks {
 
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS).register(
                 output -> {output.accept(SILERUM_ORE);});
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS).register(
+                output -> {output.accept(STILL);});
     }
 }

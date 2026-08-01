@@ -1,0 +1,4 @@
+/home/quinn/coding/C/roguelike/build/CMakeFiles/descent.dir
+/home/quinn/coding/C/roguelike/build/CMakeFiles/test_headless.dir
+/home/quinn/coding/C/roguelike/build/CMakeFiles/edit_cache.dir
+/home/quinn/coding/C/roguelike/build/CMakeFiles/rebuild_cache.dir

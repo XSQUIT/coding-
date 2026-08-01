@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/quinn/coding/C/roguelike/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
