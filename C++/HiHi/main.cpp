@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 
 int colemanLiau(std::string text);
@@ -14,7 +13,7 @@ int main(void)
 
     int result = colemanLiau(text);
     if (result < 1)
-        printf("Before Grade 1\n", result);
+        printf("Before Grade 1\n");
     else if (result >= 1 || result <= 16)
         printf("Grade %d\n", result);
     else if (result > 16)
