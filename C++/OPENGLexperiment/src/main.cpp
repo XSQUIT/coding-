@@ -1,4 +1,4 @@
-www#include "config.h"
+#include "config.h"
 
 unsigned int make_module(const std::string& filepath, unsigned int module_type);
 
