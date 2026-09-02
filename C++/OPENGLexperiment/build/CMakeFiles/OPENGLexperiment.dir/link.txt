@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/OPENGLexperiment.dir/link.d CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o CMakeFiles/OPENGLexperiment.dir/src/glad.c.o -o OPENGLexperiment  -lglfw /usr/lib/libGLX.so /usr/lib/libOpenGL.so -lgcc_s_asneeded -lgcc_s_asneeded
