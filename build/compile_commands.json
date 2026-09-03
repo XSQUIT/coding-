@@ -1,6 +1,12 @@
 [
 {
   "directory": "/home/quinn/coding/build",
+  "command": "/usr/bin/g++ -I/home/quinn/coding/C++/OPENGLexperiment/dependencies -g -o CMakeFiles/OPENGLexperiment.dir/src/triangle_mesh.cpp.o -c /home/quinn/coding/C++/OPENGLexperiment/src/triangle_mesh.cpp",
+  "file": "/home/quinn/coding/C++/OPENGLexperiment/src/triangle_mesh.cpp",
+  "output": "/home/quinn/coding/build/CMakeFiles/OPENGLexperiment.dir/src/triangle_mesh.cpp.o"
+},
+{
+  "directory": "/home/quinn/coding/build",
   "command": "/usr/bin/g++ -I/home/quinn/coding/C++/OPENGLexperiment/dependencies -g -o CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o -c /home/quinn/coding/C++/OPENGLexperiment/src/main.cpp",
   "file": "/home/quinn/coding/C++/OPENGLexperiment/src/main.cpp",
   "output": "/home/quinn/coding/build/CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o"

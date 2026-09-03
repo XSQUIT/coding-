@@ -49,6 +49,15 @@ cmake_ninja_workdir = /home/quinn/coding/build/
 
 build cmake_object_order_depends_target_OPENGLexperiment: phony || .
 
+build CMakeFiles/OPENGLexperiment.dir/src/triangle_mesh.cpp.o: CXX_COMPILER__OPENGLexperiment_unscanned_Debug /home/quinn/coding/C++/OPENGLexperiment/src/triangle_mesh.cpp || cmake_object_order_depends_target_OPENGLexperiment
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/OPENGLexperiment.dir/src/triangle_mesh.cpp.o.d
+  FLAGS = -g
+  INCLUDES = -I/home/quinn/coding/C++/OPENGLexperiment/dependencies
+  OBJECT_DIR = CMakeFiles/OPENGLexperiment.dir
+  OBJECT_FILE_DIR = CMakeFiles/OPENGLexperiment.dir/src
+  TARGET_SUPPORT_DIR = CMakeFiles/OPENGLexperiment.dir
+
 build CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o: CXX_COMPILER__OPENGLexperiment_unscanned_Debug /home/quinn/coding/C++/OPENGLexperiment/src/main.cpp || cmake_object_order_depends_target_OPENGLexperiment
   CONFIG = Debug
   DEP_FILE = CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o.d
@@ -75,7 +84,7 @@ build CMakeFiles/OPENGLexperiment.dir/src/glad.c.o: C_COMPILER__OPENGLexperiment
 #############################################
 # Link the executable OPENGLexperiment
 
-build OPENGLexperiment: CXX_EXECUTABLE_LINKER__OPENGLexperiment_Debug CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o CMakeFiles/OPENGLexperiment.dir/src/glad.c.o | /usr/lib/libGLX.so /usr/lib/libOpenGL.so
+build OPENGLexperiment: CXX_EXECUTABLE_LINKER__OPENGLexperiment_Debug CMakeFiles/OPENGLexperiment.dir/src/triangle_mesh.cpp.o CMakeFiles/OPENGLexperiment.dir/src/main.cpp.o CMakeFiles/OPENGLexperiment.dir/src/glad.c.o | /usr/lib/libGLX.so /usr/lib/libOpenGL.so
   CONFIG = Debug
   DEP_FILE = CMakeFiles/OPENGLexperiment.dir/link.d
   FLAGS = -g
