@@ -3,5 +3,6 @@
     "cSpell.words": [
         "GLFW",
         "Shaderiv"
-    ]
+    ],
+    "cmake.ignoreCMakeListsMissing": true
 }
