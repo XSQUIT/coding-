@@ -6,16 +6,16 @@
 typedef struct {
     const char *name;
     char glyph;
-    int base_hp, base_attack, base_defense, xp_reward;
+    int base_hp, base_attack, base_defense, xp_reward, gold_reward;
     int min_depth; /* first depth this kind can appear on */
 } MonsterTemplate;
 
 static const MonsterTemplate MONSTER_TEMPLATES[MONSTER_TYPE_COUNT] = {
-    { "rat",    'r',  4,  2, 0,  2, 1 },
-    { "goblin", 'g',  9,  4, 1,  5, 1 },
-    { "orc",    'o', 16,  6, 2, 10, 3 },
-    { "troll",  'T', 28,  9, 3, 20, 5 },
-    { "dragon", 'D', 55, 14, 5, 60, 8 },
+    { "rat",    'r',  4,  2, 0,  2, 5,  1 },
+    { "goblin", 'g',  9,  4, 1,  5, 10, 1 },
+    { "orc",    'o', 16,  6, 2, 10, 10, 3 },
+    { "troll",  'T', 28,  9, 3, 20, 20, 5 },
+    { "dragon", 'D', 55, 14, 5, 60, 50, 8 },
 };
 
 static int random_floor_tile(const Map *map, int *out_x, int *out_y) {
@@ -72,6 +72,7 @@ void monster_spawn_wave(Monster monsters[], int *count, const Map *map, int dept
         m->attack = t->base_attack + depth / 2;
         m->defense = t->base_defense + depth / 3;
         m->xp_reward = t->xp_reward;
+        m->gold_reward = t->gold_reward;
         m->alive = 1;
         m->awake = 0;
         (*count)++;

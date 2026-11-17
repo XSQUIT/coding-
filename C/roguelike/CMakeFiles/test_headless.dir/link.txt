@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -O2 -Wl,--dependency-file=CMakeFiles/test_headless.dir/link.d CMakeFiles/test_headless.dir/src/test_headless.c.o CMakeFiles/test_headless.dir/src/map.c.o CMakeFiles/test_headless.dir/src/entity.c.o CMakeFiles/test_headless.dir/src/combat.c.o CMakeFiles/test_headless.dir/src/item.c.o CMakeFiles/test_headless.dir/src/game_state.c.o -o test_headless  -lm

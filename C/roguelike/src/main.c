@@ -34,8 +34,11 @@ static void resolve_attack(GameState *gs, Monster *target, char *status_line) {
 
     if (killed) {
         char xp_msg[80];
+	    char gold_msg[80];
         int leveled = player_gain_xp(&gs->player, target->xp_reward, xp_msg);
+	    player_gain_gold(&gs->player, target->gold_reward, gold_msg);
         game_log(gs, xp_msg);
+	    game_log(gs, gold_msg);
         (void)leveled;
 
         if (target->kind == MONSTER_DRAGON && gs->depth >= MAX_DEPTH) {
@@ -109,7 +112,7 @@ int main(void) {
 
     render_init();
 
-    char status_line[120] = "Arrows/WASD/HJKL to move, bump monsters to attack, 'i' inventory, '>' descend, 'Q' quit.";
+    char status_line[120] = "Arrows/WASD/HJKL to move, bump monsters to attack, 'i' inventory, '>' descend, 'b' shop, 'Q' quit.";
 
     while (!gs.game_over) {
         render_frame(&gs, status_line);
@@ -126,6 +129,24 @@ int main(void) {
                 inventory_loop(&gs);
                 break;
 
+            case 'b':
+                // 1. Show the shop menu in the status line
+                strncpy(status_line, "Shop: [1] Potion (25g)  [2] Scroll (50g)  [Any other key] Cancel", 119);
+                render_frame(&gs, status_line);
+                
+                // 2. Wait for the player's choice
+                int choice = getch();
+                status_line[0] = '\0'; // Clear the menu text
+                
+                // 3. Process the purchase using the player_buy_item function
+                if (choice == '1') {
+                    player_buy_item(&gs.player, ITEM_POTION_HEAL, 25, status_line);
+                } else if (choice == '2') {
+                    player_buy_item(&gs.player, ITEM_SCROLL_STRENGTH, 50, status_line);
+                } else {
+                    strncpy(status_line, "You leave the shop.", 119);
+                }
+                break;
             case '>':
                 if (gs.map.tiles[gs.player.y][gs.player.x].type == TILE_STAIRS_DOWN) {
                     if (gs.depth < MAX_DEPTH) {

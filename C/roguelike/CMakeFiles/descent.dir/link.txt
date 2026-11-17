@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -O2 -Wl,--dependency-file=CMakeFiles/descent.dir/link.d CMakeFiles/descent.dir/src/main.c.o CMakeFiles/descent.dir/src/map.c.o CMakeFiles/descent.dir/src/entity.c.o CMakeFiles/descent.dir/src/combat.c.o CMakeFiles/descent.dir/src/item.c.o CMakeFiles/descent.dir/src/game_state.c.o CMakeFiles/descent.dir/src/render.c.o -o descent  -lcurses -lform -lm

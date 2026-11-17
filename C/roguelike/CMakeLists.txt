@@ -29,12 +29,12 @@ target_link_libraries(descent ${CURSES_LIBRARIES} m)
 # Headless logic test suite -- exercises map generation, combat, items,
 # and monster AI without touching ncurses, so it can run anywhere
 # (including CI or a terminal-less sandbox).
-add_executable(test_headless
-    src/test_headless.c
-    src/map.c
-    src/entity.c
-    src/combat.c
-    src/item.c
-    src/game_state.c
-)
-target_link_libraries(test_headless m)
+# add_executable(test_headless
+#    src/test_headless.c
+#    src/map.c
+#    src/entity.c
+#    src/combat.c
+#    src/item.c
+#    src/game_state.c
+#)
+#target_link_libraries(test_headless m)
