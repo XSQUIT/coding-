@@ -25,7 +25,7 @@ test_headless: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic_asneeded.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic_asneeded.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic_asneeded.so \
-  /usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic.a \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libc.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libc.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libc.so \
@@ -97,7 +97,7 @@ CMakeFiles/test_headless.dir/src/game_state.c.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic_asneeded.so:
 
-/usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic.a:
+/usr/lib/gcc/x86_64-pc-linux-gnu/16/libatomic.so:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16/../../../../lib/libc.so:
 

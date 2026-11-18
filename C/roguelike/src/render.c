@@ -35,26 +35,49 @@ void render_shutdown(void) {
     endwin();
 }
 
-static void draw_map(const Map *map) {
-    for (int y = 0; y < MAP_HEIGHT; y++) {
-        for (int x = 0; x < MAP_WIDTH; x++) {
-            const Tile *t = &map->tiles[y][x];
-            if (!t->discovered) {
-                move(y, x);
-                addch(' ');
+static int in_map(int x, int y)
+{
+    return x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT;
+}
+
+static void draw_map(const Map *map, int cam_x, int cam_y,
+                     int view_w, int view_h)
+{
+    for (int sy = 0; sy < view_h; sy++) {
+        for (int sx = 0; sx < view_w; sx++) {
+            int x = cam_x + sx;
+            int y = cam_y + sy;
+
+            if (!in_map(x, y))
                 continue;
+
+            const Tile *t = &map->tiles[y][x];
+            chtype ch = ' ';
+            int pair = COLOR_PAIR_FLOOR_DIM;
+
+            if (t->discovered) {
+                switch (t->type) {
+                    case TILE_WALL:
+                        ch = '#';
+                        pair = COLOR_PAIR_WALL;
+                        break;
+                    case TILE_STAIRS_DOWN:
+                        ch = '>';
+                        pair = COLOR_PAIR_STAIRS;
+                        break;
+                    default:
+                        ch = '.';
+                        pair = t->visible
+                            ? COLOR_PAIR_FLOOR_LIT
+                            : COLOR_PAIR_FLOOR_DIM;
+                        break;
+                }
+
+                if (!t->visible && t->type != TILE_STAIRS_DOWN)
+                    pair = COLOR_PAIR_FLOOR_DIM;
             }
 
-            chtype ch;
-            int pair;
-            switch (t->type) {
-                case TILE_WALL:        ch = '#'; pair = COLOR_PAIR_WALL; break;
-                case TILE_STAIRS_DOWN: ch = '>'; pair = COLOR_PAIR_STAIRS; break;
-                default:                ch = '.'; pair = t->visible ? COLOR_PAIR_FLOOR_LIT : COLOR_PAIR_FLOOR_DIM;
-            }
-            if (!t->visible && t->type != TILE_STAIRS_DOWN) pair = COLOR_PAIR_FLOOR_DIM;
-
-            move(y, x);
+            move(sy, sx);
             attron(COLOR_PAIR(pair));
             addch(ch);
             attroff(COLOR_PAIR(pair));
@@ -62,76 +85,140 @@ static void draw_map(const Map *map) {
     }
 }
 
-static void draw_items(const GameState *gs) {
+static void draw_items(const GameState *gs, int cam_x, int cam_y,
+                       int view_w, int view_h)
+{
     for (int i = 0; i < gs->item_count; i++) {
         const Item *it = &gs->items[i];
-        if (!it->active) continue;
-        if (!gs->map.tiles[it->y][it->x].visible) continue;
 
-        move(it->y, it->x);
+        if (!it->active || !in_map(it->x, it->y))
+            continue;
+        if (!gs->map.tiles[it->y][it->x].visible)
+            continue;
+
+        int sx = it->x - cam_x;
+        int sy = it->y - cam_y;
+        if (sx < 0 || sx >= view_w || sy < 0 || sy >= view_h)
+            continue;
+
+        move(sy, sx);
         attron(COLOR_PAIR(COLOR_PAIR_ITEM));
         addch(it->glyph);
         attroff(COLOR_PAIR(COLOR_PAIR_ITEM));
     }
 }
 
-static void draw_monsters(const GameState *gs) {
+static void draw_monsters(const GameState *gs, int cam_x, int cam_y,
+                          int view_w, int view_h)
+{
     for (int i = 0; i < gs->monster_count; i++) {
         const Monster *m = &gs->monsters[i];
-        if (!m->alive) continue;
-        if (!gs->map.tiles[m->y][m->x].visible) continue;
 
-        move(m->y, m->x);
+        if (!m->alive || !in_map(m->x, m->y))
+            continue;
+        if (!gs->map.tiles[m->y][m->x].visible)
+            continue;
+
+        int sx = m->x - cam_x;
+        int sy = m->y - cam_y;
+        if (sx < 0 || sx >= view_w || sy < 0 || sy >= view_h)
+            continue;
+
+        move(sy, sx);
         attron(COLOR_PAIR(COLOR_PAIR_MONSTER) | A_BOLD);
         addch(m->glyph);
         attroff(COLOR_PAIR(COLOR_PAIR_MONSTER) | A_BOLD);
     }
 }
 
-static void draw_player(const GameState *gs) {
-    move(gs->player.y, gs->player.x);
+static void draw_player(const GameState *gs, int cam_x, int cam_y,
+                        int view_w, int view_h)
+{
+    int sx = gs->player.x - cam_x;
+    int sy = gs->player.y - cam_y;
+
+    if (sx < 0 || sx >= view_w || sy < 0 || sy >= view_h)
+        return;
+
+    move(sy, sx);
     attron(COLOR_PAIR(COLOR_PAIR_PLAYER) | A_BOLD);
     addch('@');
     attroff(COLOR_PAIR(COLOR_PAIR_PLAYER) | A_BOLD);
 }
 
-static void draw_hud(const GameState *gs, const char *status_line) {
-    int hud_row = MAP_HEIGHT + 1;
-    move(hud_row, 0);
-    clrtoeol();
-
+static void draw_hud(const GameState *gs, const char *status_line,
+                     int hud_row, int rows, int cols)
+{
     attron(COLOR_PAIR(COLOR_PAIR_HUD));
     mvprintw(hud_row, 0,
-        "HP %d/%d  Lv %d  XP %d/%d  Atk %d+%d  Def %d+%d  Gold %d  Depth %d/%d",
-        gs->player.hp, gs->player.max_hp,
-        gs->player.level, gs->player.xp, gs->player.xp_next,
-        gs->player.base_attack, gs->player.weapon_bonus,
-        gs->player.base_defense, gs->player.armor_bonus,
-        gs->player.gold, gs->depth, MAX_DEPTH);
+             "HP %d/%d  Lv %d  XP %d/%d  Atk %d+%d  Def %d+%d  Gold %d  Depth %d/%d",
+             gs->player.hp, gs->player.max_hp,
+             gs->player.level, gs->player.xp, gs->player.xp_next,
+             gs->player.base_attack, gs->player.weapon_bonus,
+             gs->player.base_defense, gs->player.armor_bonus,
+             gs->player.gold, gs->depth, MAX_DEPTH);
     attroff(COLOR_PAIR(COLOR_PAIR_HUD));
 
-    move(hud_row + 1, 0);
-    clrtoeol();
-    mvprintw(hud_row + 1, 0, "%s", status_line ? status_line : "");
+    if (hud_row + 1 < rows) {
+        mvaddnstr(hud_row + 1, 0,
+                  status_line ? status_line : "",
+                  cols - 1);
+    }
 
-    int log_row = hud_row + 3;
     for (int i = 0; i < gs->message_count; i++) {
-        move(log_row + i, 0);
-        clrtoeol();
-        mvprintw(log_row + i, 0, "%s", gs->messages[i]);
+        int row = hud_row + 2 + i;
+        if (row >= rows)
+            break;
+
+        mvaddnstr(row, 0, gs->messages[i], cols - 1);
     }
 }
 
-void render_frame(const GameState *gs, const char *status_line) {
+void render_frame(const GameState *gs, const char *status_line)
+{
+    int rows, cols;
+    getmaxyx(stdscr, rows, cols);
     erase();
-    draw_map(&gs->map);
-    draw_items(gs);
-    draw_monsters(gs);
-    draw_player(gs);
-    draw_hud(gs, status_line);
+
+    if (rows < 4 || cols < 10) {
+        mvaddstr(0, 0, "Terminal too small");
+        refresh();
+        return;
+    }
+
+    /* Reserve rows for the HUD, status line, and visible message log. */
+    int log_rows = gs->message_count;
+    if (log_rows > rows - 3)
+        log_rows = rows - 3;
+
+    int hud_row = rows - (log_rows + 2);
+    int view_h = hud_row;
+    int view_w = cols - 1; /* Avoid writing into ncurses' bottom-right cell. */
+
+    if (view_h < 1)
+        view_h = 1;
+
+    /* Center the camera on the player, clamping at map edges. */
+    int cam_x = gs->player.x - view_w / 2;
+    int cam_y = gs->player.y - view_h / 2;
+
+    int max_cam_x = MAP_WIDTH > view_w ? MAP_WIDTH - view_w : 0;
+    int max_cam_y = MAP_HEIGHT > view_h ? MAP_HEIGHT - view_h : 0;
+
+    if (cam_x < 0) cam_x = 0;
+    if (cam_y < 0) cam_y = 0;
+    if (cam_x > max_cam_x) cam_x = max_cam_x;
+    if (cam_y > max_cam_y) cam_y = max_cam_y;
+
+    draw_map(&gs->map, cam_x, cam_y, view_w, view_h);
+    draw_items(gs, cam_x, cam_y, view_w, view_h);
+    draw_monsters(gs, cam_x, cam_y, view_w, view_h);
+    draw_player(gs, cam_x, cam_y, view_w, view_h);
+    draw_hud(gs, status_line, hud_row, rows, cols);
+
     refresh();
 }
-
+s
 void render_inventory(const GameState *gs) {
     erase();
     mvprintw(0, 0, "=== Inventory (press a letter to use, any other key to close) ===");

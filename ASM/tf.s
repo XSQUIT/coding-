@@ -10,7 +10,7 @@ _start:
     mov rsi, rdi
     add rsi, rsi
 
-    add rsi, 48
+    add rsi, 200
 
     lea rbx, [rip + buffer]
     mov [rbx], sil

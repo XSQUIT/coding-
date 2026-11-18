@@ -12,17 +12,17 @@
  * trade for a project this size.
  * ============================================================ */
 
-#define MAP_WIDTH        60
-#define MAP_HEIGHT       20
-#define MAX_ROOMS        14
+#define MAP_WIDTH        120
+#define MAP_HEIGHT       40
+#define MAX_ROOMS        28
 #define MIN_ROOM_SIZE     4
-#define MAX_ROOM_SIZE     9
+#define MAX_ROOM_SIZE     18
 
-#define MAX_MONSTERS     30
-#define MAX_ITEMS        20
-#define MAX_INVENTORY    12
+#define MAX_MONSTERS     60
+#define MAX_ITEMS        40
+#define MAX_INVENTORY    15
 #define MAX_MESSAGES      5
-#define MAX_DEPTH        10
+#define MAX_DEPTH        20
 
 #define FOV_RADIUS        8
 
@@ -101,6 +101,7 @@ typedef struct {
     int hp, max_hp;
     int attack, defense;
     int xp_reward;
+    int gold_reward;
     int alive;
     int awake;       /* has it noticed the player yet */
 } Monster;
@@ -126,7 +127,8 @@ int  player_attack(Player *p, Monster *m, char *msg_out);
 int  player_gain_xp(Player *p, int amount, char *msg_out);
 int  player_pickup(Player *p, Item *item, char *msg_out);
 int  player_use_inventory_slot(Player *p, int slot, char *msg_out);
-
+int  player_buy_item(Player *p, ItemKind kind, int price, char *msg_out);
+int  player_gain_gold(Player *p, int amount, char *msg_out);
 /* ---------------- Game state / messages ---------------- */
 
 typedef struct {

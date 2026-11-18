@@ -66,3 +66,10 @@ int player_gain_xp(Player *p, int amount, char *msg_out) {
     snprintf(msg_out, 80, "+%d XP", amount);
     return 0;
 }
+
+int player_gain_gold(Player *p, int amount, char *msg_out)
+{
+    p->gold += amount;
+    snprintf(msg_out, 80, "+%d Gold", amount);
+    return 0;
+}

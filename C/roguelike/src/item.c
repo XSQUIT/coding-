@@ -150,3 +150,45 @@ int player_use_inventory_slot(Player *p, int slot, char *msg_out) {
     p->inventory_count--;
     return 1;
 }
+
+int player_buy_item(Player *p, ItemKind kind, int price, char *msg_out) {
+    /* 1. Check if inventory is already full */
+    if (p->inventory_count >= MAX_INVENTORY) {
+        snprintf(msg_out, 80, "Your inventory is full! Cannot buy.");
+        return 0;
+    }
+
+    /* 2. Check if the player has enough gold */
+    if (p->gold < price) {
+        snprintf(msg_out, 80, "You don't have enough gold! Costs %d gold.", price);
+        return 0;
+    }
+
+    /* 3. Deduct the gold */
+    p->gold -= price;
+
+    /* 4. Construct the item directly into the inventory slot */
+    Item *it = &p->inventory[p->inventory_count];
+    it->kind = kind;
+    it->active = 1;
+    it->x = -1; /* Items in inventory don't need map coordinates */
+    it->y = -1;
+
+    if (kind == ITEM_POTION_HEAL) {
+        strcpy(it->name, "potion of healing");
+        it->glyph = '!';
+        it->value = 15; /* Fixed healing amount for shop version */
+    } else if (kind == ITEM_SCROLL_STRENGTH) {
+        strcpy(it->name, "scroll of strength");
+        it->glyph = '?';
+        it->value = 2;
+    } else {
+        snprintf(msg_out, 80, "Shopkeeper doesn't sell that item type.");
+        p->gold += price; /* Refund gold if invalid kind passed */
+        return 0;
+    }
+
+    p->inventory_count++;
+    snprintf(msg_out, 80, "You bought a %s for %d gold.", it->name, price);
+    return 1;
+}
