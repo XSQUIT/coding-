@@ -1,7 +1,6 @@
 #include "triangle_mesh.h"
 
-TriangleMesh::TriangleMesh()
-{
+TriangleMesh::TriangleMesh() {
     std::vector<float> data = {
         -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
          1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,

@@ -24,7 +24,7 @@ _main:                                  ; @main
 	ldr	x0, [sp, #16]                   ; 8-byte Folded Reload
 	ldur	x8, [x29, #-8]
 	mov	x9, sp
-	str	x8, [x9]
+	str	x8, [x9]	
 	bl	_printf
 	mov	w0, #0                          ; =0x0
 	ldp	x29, x30, [sp, #32]             ; 16-byte Folded Reload
